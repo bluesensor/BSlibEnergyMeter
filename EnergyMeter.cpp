@@ -2,10 +2,10 @@
  * @file EnergyMeter.cpp
  * @author JP Merchan (jhonpaulo1698@gmail.com)
  * @brief Biblioteca medidor de energia, permite medir voltaje, y corriente con gran precisión.
- * @version 2.1
- * @date 2020-12-19
+ * @version 2.1.1
+ * @date 2021-04-13
  * 
- * @copyright DataAnalitic (c) {2020}
+ * @copyright DataAnalitic (c) {2021}
  * 
  */
 
