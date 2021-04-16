@@ -2,8 +2,8 @@
  * @file BSlib_EnergyMeter.h
  * @author JP Merchan (jhonpaulo1698@gmail.com)
  * @brief Biblioteca medidor de energia, permite medir voltaje, y corriente con gran precisión.
- * @version 2.1.1
- * @date 2021-04-13
+ * @version 2.2.1
+ * @date 2021-04-16
  * 
  * @copyright DataAnalitic (c) {2021}
  * 
