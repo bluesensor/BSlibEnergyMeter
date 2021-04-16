@@ -1,5 +1,5 @@
 /**
- * @file EnergyMeter.cpp
+ * @file BSlib_EnergyMeter.cpp
  * @author JP Merchan (jhonpaulo1698@gmail.com)
  * @brief Biblioteca medidor de energia, permite medir voltaje, y corriente con gran precisión.
  * @version 2.1.1
