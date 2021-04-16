@@ -9,8 +9,8 @@
  * 
  */
 
-#ifndef EnergyMeter_h
-#define EnergyMeter_h
+#ifndef BSlib_EnergyMeter_h
+#define BSlib_EnergyMeter_h
 #include "Arduino.h"
 
 #define ADC_SCALE 1023.0
