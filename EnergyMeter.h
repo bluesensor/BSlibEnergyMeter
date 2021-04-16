@@ -17,7 +17,7 @@
 #define VOLT_INPUT_MAIN 5.0
 #define VOLT_INPUT_DRIVER 3.3
 
-class EnergyMeter
+class BSlib_EnergyMeter
 {
 public:
 	void SensorCurrent(unsigned int _inPinCurrent, unsigned int _inPinCurrentRef, float _factorCurrent);
