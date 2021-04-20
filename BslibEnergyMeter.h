@@ -1,5 +1,5 @@
 /**
- * @file BSlib_EnergyMeter.h
+ * @file BslibEnergyMeter.h
  * @author JP Merchan (jhonpaulo1698@gmail.com)
  * @brief Biblioteca medidor de energia, permite medir voltaje, y corriente con gran precisión.
  * @version 2.2.1
@@ -9,8 +9,8 @@
  * 
  */
 
-#ifndef BSlib_EnergyMeter_h
-#define BSlib_EnergyMeter_h
+#ifndef BslibEnergyMeter_h
+#define BslibEnergyMeter_h
 #include "Arduino.h"
 
 #define ADC_SCALE 1023.0
