@@ -18,7 +18,7 @@
  * @param _inPinCurrentRef pin analógico Vref del sensor
  * @param _factorCurrent factor de sensiblidad del sensor
  */
-void BSlib_EnergyMeter::SensorCurrent(unsigned int _inPinCurrent, unsigned int _inPinCurrentRef, float _factorCurrent)
+void BslibEnergyMeter::SensorCurrent(unsigned int _inPinCurrent, unsigned int _inPinCurrentRef, float _factorCurrent)
 {
     inPinCurrent = _inPinCurrent;
     inPinCurrentRef = _inPinCurrentRef;
@@ -32,7 +32,7 @@ void BSlib_EnergyMeter::SensorCurrent(unsigned int _inPinCurrent, unsigned int _
  * @param _factorBatt factor de sensiblidad del sensor
  * @param _offsetBatt compensacion para obtener voltaje real
  */
-void BSlib_EnergyMeter::SensorBattery(unsigned int _inPinBatt, float _factorBatt, float _offsetBatt)
+void BslibEnergyMeter::SensorBattery(unsigned int _inPinBatt, float _factorBatt, float _offsetBatt)
 {
     inPinBatt = _inPinBatt;
     factorBatt = _factorBatt;
@@ -45,7 +45,7 @@ void BSlib_EnergyMeter::SensorBattery(unsigned int _inPinBatt, float _factorBatt
  * @param _inPinVolt pin analógico del sensor
  * @param _factorVolt factor de sensiblidad del sensor
  */
-void BSlib_EnergyMeter::SensorVoltage(unsigned int _inPinVolt, float _factorVolt)
+void BslibEnergyMeter::SensorVoltage(unsigned int _inPinVolt, float _factorVolt)
 {
     inPinVolt = _inPinVolt;
     factorVolt = _factorVolt;
@@ -58,7 +58,7 @@ void BSlib_EnergyMeter::SensorVoltage(unsigned int _inPinVolt, float _factorVolt
  * @param samples número de muestras para el promedio
  * @return int 
  */
-unsigned int BSlib_EnergyMeter::FilterValueADC(unsigned int pinADC, unsigned int samples)
+unsigned int BslibEnergyMeter::FilterValueADC(unsigned int pinADC, unsigned int samples)
 {
     unsigned long valueADC = 0;
     unsigned int filteredValueADC = 0;
@@ -76,7 +76,7 @@ unsigned int BSlib_EnergyMeter::FilterValueADC(unsigned int pinADC, unsigned int
  * @param _numberOfSamples número de muestras a tomar en cada lenctura
  * @return int 
  */
-unsigned int BSlib_EnergyMeter::AutoCalibrationCurrent(unsigned int _numberOfSamples)
+unsigned int BslibEnergyMeter::AutoCalibrationCurrent(unsigned int _numberOfSamples)
 {
     calibrationCurrent = FilterValueADC(inPinCurrentRef, _numberOfSamples);
     // algunos sensores tienen un offset (compensacion) cuando Vref<Vout
@@ -90,7 +90,7 @@ unsigned int BSlib_EnergyMeter::AutoCalibrationCurrent(unsigned int _numberOfSam
  * 
  * @param _currentReference 
  */
-void BSlib_EnergyMeter::SetCurrentReference(unsigned int _currentReference)
+void BslibEnergyMeter::SetCurrentReference(unsigned int _currentReference)
 {
     currentReference = _currentReference;
 }
@@ -101,7 +101,7 @@ void BSlib_EnergyMeter::SetCurrentReference(unsigned int _currentReference)
  * @param _numberOfSamples número de muestras a tomar en cada lenctura
  * @return float 
  */
-float BSlib_EnergyMeter::GetCurrent(unsigned int _numberOfSamples)
+float BslibEnergyMeter::GetCurrent(unsigned int _numberOfSamples)
 {
     int filteredCurrent = FilterValueADC(inPinCurrent, _numberOfSamples) - currentReference;
 
@@ -121,7 +121,7 @@ float BSlib_EnergyMeter::GetCurrent(unsigned int _numberOfSamples)
  * @param _numberOfSamples número de muestras a tomar en cada lenctura
  * @return float 
  */
-float BSlib_EnergyMeter::GetBattery(unsigned int _numberOfSamples)
+float BslibEnergyMeter::GetBattery(unsigned int _numberOfSamples)
 {
     int filteredBatt = FilterValueADC(inPinBatt, _numberOfSamples);
     float convertValueADC = float(filteredBatt) / ADC_SCALE * VOLT_INPUT_MAIN;
@@ -135,7 +135,7 @@ float BSlib_EnergyMeter::GetBattery(unsigned int _numberOfSamples)
  * @param _numberOfSamples número de muestras a tomar en cada lenctura
  * @return float 
  */
-float BSlib_EnergyMeter::GetVoltage(unsigned int _numberOfSamples)
+float BslibEnergyMeter::GetVoltage(unsigned int _numberOfSamples)
 {
     int filteredVolt = FilterValueADC(inPinVolt, _numberOfSamples);
     float convertValueADC = float(filteredVolt) / ADC_SCALE * VOLT_INPUT_DRIVER;
