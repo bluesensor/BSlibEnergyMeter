@@ -14,11 +14,11 @@
 /**
  * @brief Configuracion de los pines del sensor de corriente
  * 
- * @param _inPinCurrent pin analógico Vout del sensor
+ * @param _inPinCurrent pin analógico Vout del sensor de voltaje
  * @param _inPinCurrentRef pin analógico Vref del sensor
  * @param _factorCurrent factor de sensiblidad del sensor
  */
-void BslibEnergyMeter::SensorCurrent(unsigned int _inPinCurrent, unsigned int _inPinCurrentRef, float _factorCurrent)
+void BslibEnergyMeter::SetSensorCurrent(unsigned int _inPinCurrent, unsigned int _inPinCurrentRef, float _factorCurrent)
 {
     inPinCurrent = _inPinCurrent;
     inPinCurrentRef = _inPinCurrentRef;
@@ -26,29 +26,29 @@ void BslibEnergyMeter::SensorCurrent(unsigned int _inPinCurrent, unsigned int _i
 }
 
 /**
- * @brief Configuracion de los pines del sensor de bateria
+ * @brief Configuracion de los pines del sensor de voltaje
  * 
- * @param _inPinBatt pin analógico de sensor de bateria
- * @param _factorBatt factor de sensiblidad del sensor
- * @param _offsetBatt compensacion para obtener voltaje real
+ * @param _inPinVoltage pin analógico de Vout de sensor de voltaje
+ * @param _factorVoltage factor de sensiblidad del sensor
+ * @param _offsetVoltage compensacion para obtener voltaje real
  */
-void BslibEnergyMeter::SensorBattery(unsigned int _inPinBatt, float _factorBatt, float _offsetBatt)
+void BslibEnergyMeter::SetSensorVoltage(unsigned int _inPinVoltage, float _factorVoltage, float _offsetVoltage = 0)
 {
-    inPinBatt = _inPinBatt;
-    factorBatt = _factorBatt;
-    offsetBatt = _offsetBatt;
+    inPinVoltage = _inPinVoltage;
+    factorVoltage = _factorVoltage;
+    offsetVoltage = _offsetVoltage;
 }
 
 /**
- * @brief Configuracion de los pines del seguidor de voltaje
+ * @brief Configuracion de los pines del sensor de voltaje
  * 
- * @param _inPinVolt pin analógico del sensor
- * @param _factorVolt factor de sensiblidad del sensor
+ * @param _inPinVoltage pin analógico de sensor de voltaje
+ * @param _factorVoltage factor de sensiblidad del sensor
  */
-void BslibEnergyMeter::SensorVoltage(unsigned int _inPinVolt, float _factorVolt)
+void BslibEnergyMeter::SetSensorVoltage(unsigned int _inPinVoltage, float _factorVoltage)
 {
-    inPinVolt = _inPinVolt;
-    factorVolt = _factorVolt;
+    inPinVoltage = _inPinVoltage;
+    factorVoltage = _factorVoltage;
 }
 
 /**
@@ -121,24 +121,11 @@ float BslibEnergyMeter::GetCurrent(unsigned int _numberOfSamples)
  * @param _numberOfSamples número de muestras a tomar en cada lenctura
  * @return float 
  */
-float BslibEnergyMeter::GetBattery(unsigned int _numberOfSamples)
-{
-    int filteredBatt = FilterValueADC(inPinBatt, _numberOfSamples);
-    float convertValueADC = float(filteredBatt) / ADC_SCALE * VOLT_INPUT_MAIN;
-    float batt = (convertValueADC * factorBatt) + offsetBatt;
-    return batt;
-}
-
-/**
- * @brief Obtiene el voltaje del seguidor de corriente
- * 
- * @param _numberOfSamples número de muestras a tomar en cada lenctura
- * @return float 
- */
 float BslibEnergyMeter::GetVoltage(unsigned int _numberOfSamples)
 {
-    int filteredVolt = FilterValueADC(inPinVolt, _numberOfSamples);
-    float convertValueADC = float(filteredVolt) / ADC_SCALE * VOLT_INPUT_DRIVER;
-    float volt = convertValueADC * factorVolt;
-    return volt;
+    int filteredVoltage = FilterValueADC(inPinVoltage, _numberOfSamples);
+    float convertValueADC = float(filteredVoltage) / ADC_SCALE * VOLT_INPUT_MAIN;
+    float voltage = (convertValueADC * factorVoltage) + offsetVoltage;
+
+    return voltage;
 }

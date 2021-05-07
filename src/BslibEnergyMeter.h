@@ -20,9 +20,9 @@
 class BslibEnergyMeter
 {
 public:
-	void SensorCurrent(unsigned int _inPinCurrent, unsigned int _inPinCurrentRef, float _factorCurrent);
-	void SensorBattery(unsigned int _inPinBatt, float _factorBatt, float _offsetBatt);
-	void SensorVoltage(unsigned int _inPinVolt, float _factorVolt);
+	void SetSensorCurrent(unsigned int _inPinCurrent, unsigned int _inPinCurrentRef, float _factorCurrent);
+	void SetSensorVoltage(unsigned int _inPinVoltage, float _factorVoltage, float _offsetVoltage);
+	void SetSensorVoltage(unsigned int _inPinVoltage, float _factorVoltage);
 
 	unsigned int FilterValueADC(unsigned int pinADC, unsigned int samples);
 	unsigned int AutoCalibrationCurrent(unsigned int _numberOfSamples);
@@ -30,21 +30,18 @@ public:
 
 	float GetCurrent(unsigned int _numberOfSamples);
 	float GetVoltage(unsigned int _numberOfSamples);
-	float GetBattery(unsigned int _numberOfSamples);
 
 private:
-	unsigned int inPinCurrent;
-	unsigned int inPinCurrentRef;
-	unsigned int inPinVolt;
-	unsigned int inPinBatt;
-
-	float factorCurrent;
-	float factorVolt;
-	float factorBatt;
-
-	float offsetBatt;
 	unsigned int currentReference;
 	unsigned int calibrationCurrent;
+
+	unsigned int inPinCurrent;
+	unsigned int inPinCurrentRef;
+	unsigned int inPinVoltage;
+
+	float factorCurrent;
+	float factorVoltage;
+	float offsetVoltage;
 };
 
 #endif
