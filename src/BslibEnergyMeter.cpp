@@ -62,11 +62,28 @@ unsigned int BslibEnergyMeter::FilterValueADC(unsigned int pinADC, unsigned int 
 {
     unsigned long valueADC = 0;
     unsigned int filteredValueADC = 0;
+    float varVolt=0.00450211785842;
+    float varProcess=1e-8;
+    float Pc=0.0;
+    float G=0.0;
+    float P=1.0;
+    float Xp=0.0;
+    float Zp=0.0;
+    float Xe=0.0;
+
+
     for (unsigned int i = 0; i < samples; i++)
     {
         valueADC += analogRead(pinADC);
+            // kalman process
+        Pc = P + varProcess;
+        G = Pc/(Pc + varVolt);    // kalman gain
+        P = (1-G)*Pc;
+        Xp = Xe;
+        Zp = Xp;
+        Xe = G*((float)valueADC-Zp)+Xp;   // the kalman estimate of the sensor voltage
     }
-    filteredValueADC = valueADC / samples;
+    filteredValueADC = (int)Xe;
     return filteredValueADC;
 }
 
