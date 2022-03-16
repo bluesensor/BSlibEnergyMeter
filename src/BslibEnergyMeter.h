@@ -15,8 +15,6 @@
 
 #define ADC_SCALE 1023.0
 
-#if 
-
 class BslibEnergyMeter
 {
 public:
