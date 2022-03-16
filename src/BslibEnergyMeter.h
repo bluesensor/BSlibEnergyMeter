@@ -15,6 +15,8 @@
 
 #define ADC_SCALE 1023.0
 
+#if 
+
 class BslibEnergyMeter
 {
 public:
@@ -28,9 +30,10 @@ public:
 	void SetCurrentReference(unsigned int _currentReference);
 	void SetAnalogReference(float _analogReference);
 
-
+	float SoftwareDCA (unsigned int digitalValue);
 	float GetCurrent(unsigned int _numberOfSamples);
 	float GetVoltage(unsigned int _numberOfSamples);
+	// float DebugDCA();
 
 private:
 	unsigned int currentReference;
