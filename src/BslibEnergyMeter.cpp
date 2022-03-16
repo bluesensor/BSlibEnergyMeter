@@ -96,6 +96,16 @@ void BslibEnergyMeter::SetCurrentReference(unsigned int _currentReference)
 }
 
 /**
+ * @brief Configura el valor de referencia analógica para el MCU
+ * 
+ * @param _analogReference 
+ */
+void BslibEnergyMeter::SetAnalogReference(float _analogReference)
+{
+    analogReference = _analogReference;
+}
+
+/**
  * @brief Obtiene la corriente del sensor motor
  * 
  * @param _numberOfSamples número de muestras a tomar en cada lenctura
@@ -110,7 +120,7 @@ float BslibEnergyMeter::GetCurrent(unsigned int _numberOfSamples)
         filteredCurrent = 0;
     }
 
-    float convertValueADC = float(filteredCurrent) / ADC_SCALE * VOLT_INPUT_DRIVER;
+    float convertValueADC = float(filteredCurrent) / ADC_SCALE * analogReference;
     float current = convertValueADC / factorCurrent;
     return current;
 }
@@ -124,7 +134,7 @@ float BslibEnergyMeter::GetCurrent(unsigned int _numberOfSamples)
 float BslibEnergyMeter::GetVoltage(unsigned int _numberOfSamples)
 {
     int filteredVoltage = FilterValueADC(inPinVoltage, _numberOfSamples);
-    float convertValueADC = float(filteredVoltage) / ADC_SCALE * VOLT_INPUT_MAIN;
+    float convertValueADC = float(filteredVoltage) / ADC_SCALE * analogReference;
     float voltage = (convertValueADC * factorVoltage) + offsetVoltage;
 
     return voltage;
