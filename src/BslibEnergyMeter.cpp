@@ -76,15 +76,23 @@ unsigned int BslibEnergyMeter::FilterValueADC(unsigned int pinADC, unsigned int 
  * @param _numberOfSamples número de muestras a tomar en cada lenctura
  * @return int 
  */
-unsigned int BslibEnergyMeter::AutoCalibrationCurrent(unsigned int _numberOfSamples)
+unsigned int BslibEnergyMeter::AutoCalibrationCurrent(unsigned int _numberOfSamples, unsigned int lastVRef)
 {
+
     float vRef = FilterValueADC(inPinCurrentRef, _numberOfSamples);
     float vOut = FilterValueADC(inPinCurrent, _numberOfSamples);
-    
-    calibrationCurrent = vRef;
+
+    if (lastVRef == vRef)
+    {
+        calibrationCurrent = lastVRef;
+    }
+    else
+    {
+        calibrationCurrent = vRef;
+    }
     // algunos sensores tienen un offset (compensacion) cuando Vref<Vout
-    float offset = vOut - vRef;
-    calibrationCurrent += offset;
+    // float offset = vOut - vRef;
+    // calibrationCurrent += offset;
     return calibrationCurrent;
 }
 

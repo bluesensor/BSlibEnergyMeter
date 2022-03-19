@@ -24,7 +24,7 @@ public:
 	void SetSensorVoltage(unsigned int _inPinVoltage, float _factorVoltage);
 
 	unsigned int FilterValueADC(unsigned int pinADC, unsigned int samples);
-	unsigned int AutoCalibrationCurrent(unsigned int _numberOfSamples);
+	unsigned int AutoCalibrationCurrent(unsigned int _numberOfSamples, unsigned int lastVRef);
 	void SetCurrentReference(unsigned int _currentReference);
 	void SetAnalogReference(float _analogReference);
 
