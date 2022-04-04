@@ -15,6 +15,12 @@
 
 #define ADC_SCALE 1023.0
 
+// define theoretical vref calibration constant for use in readvcc()
+// 1100mV*1024 ADC steps
+#ifndef READVCC_CALIBRATION_CONST
+#define READVCC_CALIBRATION_CONST 1126400L
+#endif
+
 class BslibEnergyMeter
 {
 public:
@@ -31,7 +37,9 @@ public:
 	float SoftwareDCA (unsigned int digitalValue);
 	float GetCurrent(unsigned int _numberOfSamples);
 	float GetVoltage(unsigned int _numberOfSamples);
-	// float DebugDCA();
+
+	float ReadVcc();
+
 
 private:
 	unsigned int currentReference;
