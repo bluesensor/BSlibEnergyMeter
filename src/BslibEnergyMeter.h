@@ -29,14 +29,18 @@ public:
 	void SetSensorVoltage(unsigned int _inPinVoltage, float _factorVoltage, float _offsetVoltage);
 	void SetSensorVoltage(unsigned int _inPinVoltage, float _factorVoltage);
 
-	unsigned int FilterValueADC(unsigned int pinADC, unsigned int samples);
-	unsigned int AutoCalibrationCurrent(unsigned int _numberOfSamples, unsigned int lastVRef);
+	unsigned int FilterValueADC(unsigned int pinADC);
+	unsigned int AutoCalibrationCurrent(unsigned int lastVRef);
 	void SetCurrentReference(unsigned int _currentReference);
 	void SetAnalogReference(float _analogReference);
+	void SetFilterSamples(unsigned int _numberOfSamples);
+
 
 	float SoftwareDCA (unsigned int digitalValue);
-	float GetCurrent(unsigned int _numberOfSamples);
-	float GetVoltage(unsigned int _numberOfSamples);
+	float GetCurrent();
+	float GetCurrentADC();
+	int GetCurrentRaw();
+	float GetVoltage();
 
 	float ReadVcc();
 
@@ -49,6 +53,7 @@ private:
 	unsigned int inPinCurrentRef;
 	unsigned int inPinVoltage;
 
+	unsigned int numberOfSamples;
 	float analogReference;
 	float factorCurrent;
 	float factorVoltage;

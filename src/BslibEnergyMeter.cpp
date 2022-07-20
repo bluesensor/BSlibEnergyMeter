@@ -55,32 +55,30 @@ void BslibEnergyMeter::SetSensorVoltage(unsigned int _inPinVoltage, float _facto
  * @brief Filtro suave (promedio) de lecturas ADC
  * 
  * @param pinADC pin analógico al cual leer
- * @param samples número de muestras para el promedio
  * @return int 
  */
-unsigned int BslibEnergyMeter::FilterValueADC(unsigned int pinADC, unsigned int samples)
+unsigned int BslibEnergyMeter::FilterValueADC(unsigned int pinADC)
 {
     unsigned long valueADC = 0;
     unsigned int filteredValueADC = 0;
-    for (unsigned int i = 0; i < samples; i++)
+    for (unsigned int i = 0; i < numberOfSamples; i++)
     {
         valueADC += analogRead(pinADC);
     }
-    filteredValueADC = valueADC / samples;
+    filteredValueADC = valueADC / numberOfSamples;
     return filteredValueADC;
 }
 
 /**
  * @brief Calibrar automaticamente el sensor de corriente con Vref. Usar esta función cuando la corriente sea cero.
  * 
- * @param _numberOfSamples número de muestras a tomar en cada lenctura
  * @return int 
  */
-unsigned int BslibEnergyMeter::AutoCalibrationCurrent(unsigned int _numberOfSamples, unsigned int lastVRef)
+unsigned int BslibEnergyMeter::AutoCalibrationCurrent(unsigned int lastVRef)
 {
 
-    float vRef = FilterValueADC(inPinCurrentRef, _numberOfSamples);
-    float vOut = FilterValueADC(inPinCurrent, _numberOfSamples);
+    float vRef = FilterValueADC(inPinCurrentRef);
+    float vOut = FilterValueADC(inPinCurrent);
 
     if (lastVRef == vRef)
     {
@@ -116,6 +114,11 @@ void BslibEnergyMeter::SetAnalogReference(float _analogReference)
     analogReference = _analogReference;
 }
 
+void BslibEnergyMeter::SetFilterSamples(unsigned int _numberOfSamples)
+{
+    numberOfSamples = _numberOfSamples;
+}
+
 /**
  * @brief Calcula el valor en voltaje de la lectura ADC del MCU
  * 
@@ -126,18 +129,16 @@ float BslibEnergyMeter::SoftwareDCA (unsigned int digitalValue)
 {
     float convertValueDCA = float(digitalValue) / ADC_SCALE * analogReference;
     return convertValueDCA;
-
 }
 
 /**
  * @brief Obtiene la corriente del sensor motor
  * 
- * @param _numberOfSamples número de muestras a tomar en cada lenctura
  * @return float 
  */
-float BslibEnergyMeter::GetCurrent(unsigned int _numberOfSamples)
+float BslibEnergyMeter::GetCurrent()
 {
-    int filteredCurrent = FilterValueADC(inPinCurrent, _numberOfSamples) - currentReference;
+    int filteredCurrent = FilterValueADC(inPinCurrent) - currentReference;
 
     if (filteredCurrent < 0)
     {
@@ -152,12 +153,11 @@ float BslibEnergyMeter::GetCurrent(unsigned int _numberOfSamples)
 /**
  * @brief Obtiene el voltaje de la bateria
  * 
- * @param _numberOfSamples número de muestras a tomar en cada lenctura
  * @return float 
  */
-float BslibEnergyMeter::GetVoltage(unsigned int _numberOfSamples)
+float BslibEnergyMeter::GetVoltage()
 {
-    int filteredVoltage = FilterValueADC(inPinVoltage, _numberOfSamples);
+    int filteredVoltage = FilterValueADC(inPinVoltage);
     float voltageSensor = SoftwareDCA(filteredVoltage);
     float voltage = (voltageSensor * factorVoltage) + offsetVoltage;
 
