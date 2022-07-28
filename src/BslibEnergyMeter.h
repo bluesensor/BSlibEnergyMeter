@@ -25,35 +25,43 @@ class BslibEnergyMeter
 {
 public:
 
-	void SetSensorCurrent(unsigned int _inPinCurrent, unsigned int _inPinCurrentRef, float _factorCurrent);
-	void SetSensorVoltage(unsigned int _inPinVoltage, float _factorVoltage, float _offsetVoltage);
-	void SetSensorVoltage(unsigned int _inPinVoltage, float _factorVoltage);
+	void SetSensorCurrent(int _inPinCurrent, int _inPinCurrentRef, float _factorCurrent);
+	void SetSensorVoltage(int _inPinVoltage, float _factorVoltage, float _offsetVoltage);
+	void SetSensorVoltage(int _inPinVoltage, float _factorVoltage);
 
-	unsigned int FilterValueADC(unsigned int pinADC);
-	unsigned int AutoCalibrationCurrent(unsigned int lastVRef);
-	void SetCurrentReference(unsigned int _currentReference);
+	void SetCurrentReference(int _currentReference);
 	void SetAnalogReference(float _analogReference);
-	void SetFilterSamples(unsigned int _numberOfSamples);
+	void SetFilterSamples(int _numberOfSamples);
+	
+	int FilterValueADC(int pinADC);
+	float SoftwareDAC (int digitalValue);
 
+	int AutoCalibrationCurrent(int lastVRef);
 
-	float SoftwareDCA (unsigned int digitalValue);
+	void CalCurrent();
+	int GetCurrentRefADC();
+	int GetCurrentADC();
+	float GetCurrentDAC();
 	float GetCurrent();
-	float GetCurrentADC();
-	int GetCurrentRaw();
+
+	void CalVoltage();
+	int GetVoltageADC();
+	float GetVoltageDAC();
 	float GetVoltage();
+
+	// int GetDistanceADC();
+	// float GetDistanceDAC();
+	// float GetDistance();
 
 	float ReadVcc();
 
+private:	
 
-private:
-	unsigned int currentReference;
-	unsigned int calibrationCurrent;
+	int inPinCurrent;
+	int inPinCurrentRef;
+	int inPinVoltage;
 
-	unsigned int inPinCurrent;
-	unsigned int inPinCurrentRef;
-	unsigned int inPinVoltage;
-
-	unsigned int numberOfSamples;
+	int numberOfSamples;
 	float analogReference;
 	float factorCurrent;
 	float factorVoltage;

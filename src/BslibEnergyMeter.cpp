@@ -11,6 +11,18 @@
 
 #include "BslibEnergyMeter.h"
 
+	int currentReference;
+	int calibrationCurrent;
+
+	int currentADC;
+    int currentRefADC;
+	float currentDAC;
+    float current;
+
+	int voltageADC;
+	float voltageDAC;
+    float voltage;
+
 /**
  * @brief Configuracion de los pines del sensor de corriente
  * 
@@ -18,7 +30,7 @@
  * @param _inPinCurrentRef pin analógico Vref del sensor
  * @param _factorCurrent factor de sensiblidad del sensor
  */
-void BslibEnergyMeter::SetSensorCurrent(unsigned int _inPinCurrent, unsigned int _inPinCurrentRef, float _factorCurrent)
+void BslibEnergyMeter::SetSensorCurrent(int _inPinCurrent, int _inPinCurrentRef, float _factorCurrent)
 {
     inPinCurrent = _inPinCurrent;
     inPinCurrentRef = _inPinCurrentRef;
@@ -32,7 +44,7 @@ void BslibEnergyMeter::SetSensorCurrent(unsigned int _inPinCurrent, unsigned int
  * @param _factorVoltage factor de sensiblidad del sensor
  * @param _offsetVoltage compensacion para obtener voltaje real
  */
-void BslibEnergyMeter::SetSensorVoltage(unsigned int _inPinVoltage, float _factorVoltage, float _offsetVoltage = 0)
+void BslibEnergyMeter::SetSensorVoltage(int _inPinVoltage, float _factorVoltage, float _offsetVoltage = 0)
 {
     inPinVoltage = _inPinVoltage;
     factorVoltage = _factorVoltage;
@@ -45,53 +57,10 @@ void BslibEnergyMeter::SetSensorVoltage(unsigned int _inPinVoltage, float _facto
  * @param _inPinVoltage pin analógico de sensor de voltaje
  * @param _factorVoltage factor de sensiblidad del sensor
  */
-void BslibEnergyMeter::SetSensorVoltage(unsigned int _inPinVoltage, float _factorVoltage)
+void BslibEnergyMeter::SetSensorVoltage(int _inPinVoltage, float _factorVoltage)
 {
     inPinVoltage = _inPinVoltage;
     factorVoltage = _factorVoltage;
-}
-
-/**
- * @brief Filtro suave (promedio) de lecturas ADC
- * 
- * @param pinADC pin analógico al cual leer
- * @return int 
- */
-unsigned int BslibEnergyMeter::FilterValueADC(unsigned int pinADC)
-{
-    unsigned long valueADC = 0;
-    unsigned int filteredValueADC = 0;
-    for (unsigned int i = 0; i < numberOfSamples; i++)
-    {
-        valueADC += analogRead(pinADC);
-    }
-    filteredValueADC = valueADC / numberOfSamples;
-    return filteredValueADC;
-}
-
-/**
- * @brief Calibrar automaticamente el sensor de corriente con Vref. Usar esta función cuando la corriente sea cero.
- * 
- * @return int 
- */
-unsigned int BslibEnergyMeter::AutoCalibrationCurrent(unsigned int lastVRef)
-{
-
-    float vRef = FilterValueADC(inPinCurrentRef);
-    float vOut = FilterValueADC(inPinCurrent);
-
-    if (lastVRef == vRef)
-    {
-        calibrationCurrent = lastVRef;
-    }
-    else
-    {
-        calibrationCurrent = vRef;
-    }
-    // algunos sensores tienen un offset (compensacion) cuando Vref<Vout
-    // float offset = vOut - vRef;
-    // calibrationCurrent += offset;
-    return calibrationCurrent;
 }
 
 /**
@@ -99,7 +68,7 @@ unsigned int BslibEnergyMeter::AutoCalibrationCurrent(unsigned int lastVRef)
  * 
  * @param _currentReference 
  */
-void BslibEnergyMeter::SetCurrentReference(unsigned int _currentReference)
+void BslibEnergyMeter::SetCurrentReference(int _currentReference)
 {
     currentReference = _currentReference;
 }
@@ -114,9 +83,27 @@ void BslibEnergyMeter::SetAnalogReference(float _analogReference)
     analogReference = _analogReference;
 }
 
-void BslibEnergyMeter::SetFilterSamples(unsigned int _numberOfSamples)
+void BslibEnergyMeter::SetFilterSamples(int _numberOfSamples)
 {
     numberOfSamples = _numberOfSamples;
+}
+
+/**
+ * @brief Filtro suave (promedio) de lecturas ADC
+ * 
+ * @param pinADC pin analógico al cual leer
+ * @return int 
+ */
+int BslibEnergyMeter::FilterValueADC(int pinADC)
+{
+    unsigned long valueADC = 0;
+    int filteredValueADC = 0;
+    for (int i = 0; i < numberOfSamples; i++)
+    {
+        valueADC += analogRead(pinADC);
+    }
+    filteredValueADC = valueADC / numberOfSamples;
+    return filteredValueADC;
 }
 
 /**
@@ -125,41 +112,95 @@ void BslibEnergyMeter::SetFilterSamples(unsigned int _numberOfSamples)
  * @param digitalValue 
  * @return float 
  */
-float BslibEnergyMeter::SoftwareDCA (unsigned int digitalValue)
+float BslibEnergyMeter::SoftwareDAC (int digitalValue)
 {
     float convertValueDCA = float(digitalValue) / ADC_SCALE * analogReference;
     return convertValueDCA;
 }
 
 /**
- * @brief Obtiene la corriente del sensor motor
+ * @brief Calibrar automaticamente el sensor de corriente con Vref. Usar esta función cuando la corriente sea cero.
  * 
- * @return float 
+ * @return int 
  */
-float BslibEnergyMeter::GetCurrent()
+int BslibEnergyMeter::AutoCalibrationCurrent(int lastVRef)
 {
-    int filteredCurrent = FilterValueADC(inPinCurrent) - currentReference;
 
-    if (filteredCurrent < 0)
+    float vRef = FilterValueADC(inPinCurrentRef);
+    float vOut = FilterValueADC(inPinCurrent);
+
+    if (lastVRef == vRef)
     {
-        filteredCurrent = 0;
+        calibrationCurrent = vRef;
+    }
+    else
+    {
+        calibrationCurrent = vRef;
+    }
+    // algunos sensores tienen un offset (compensacion) cuando Vref<Vout
+    // float offset = vOut - vRef;
+    // calibrationCurrent += offset;
+    return calibrationCurrent;
+}
+
+void BslibEnergyMeter::CalCurrent()
+{
+    currentRefADC = FilterValueADC(inPinCurrentRef);
+    currentADC = FilterValueADC(inPinCurrent);
+
+    int offsetCurrent = currentADC - currentRefADC;
+
+    if (offsetCurrent < 0)
+    {
+        offsetCurrent = 0;
     }
 
-    float voltageSensor = SoftwareDCA(filteredCurrent);
-    float current = voltageSensor / factorCurrent;
+    currentDAC = SoftwareDAC(offsetCurrent);
+    current = currentDAC / factorCurrent;
+}
+
+int BslibEnergyMeter::GetCurrentRefADC()
+{
+    return currentRefADC;
+}
+
+int BslibEnergyMeter::GetCurrentADC()
+{
+    return currentADC;
+}
+
+float BslibEnergyMeter::GetCurrentDAC()
+{
+    return currentDAC;
+}
+float BslibEnergyMeter::GetCurrent()
+{
+    CalCurrent();
     return current;
 }
 
-/**
- * @brief Obtiene el voltaje de la bateria
- * 
- * @return float 
- */
+// -----------------------------------------------------------
+
+void BslibEnergyMeter::CalVoltage()
+{
+    voltageADC = FilterValueADC(inPinVoltage);
+    voltageDAC = SoftwareDAC(voltageADC);
+    voltage = (voltageDAC * factorVoltage) + offsetVoltage;
+}
+
+int BslibEnergyMeter::GetVoltageADC()
+{
+    return voltageADC;
+}
+
+float BslibEnergyMeter::GetVoltageDAC()
+{
+    return voltageDAC;
+}
+
 float BslibEnergyMeter::GetVoltage()
 {
-    int filteredVoltage = FilterValueADC(inPinVoltage);
-    float voltageSensor = SoftwareDCA(filteredVoltage);
-    float voltage = (voltageSensor * factorVoltage) + offsetVoltage;
+    CalVoltage();
 
     return voltage;
 }
