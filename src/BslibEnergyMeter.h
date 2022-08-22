@@ -23,15 +23,15 @@
 
 class BslibEnergyMeter {
 public:
-  void SetSensorCurrent(int _inPinCurrent, int _inPinCurrentRef, float _factorCurrent);
-  void SetSensorVoltage(int _inPinVoltage, float _factorVoltage, float _offsetVoltage);
-  void SetSensorVoltage(int _inPinVoltage, float _factorVoltage);
+  void SetSensorCurrent(unsigned int _inPinCurrent, unsigned int _inPinCurrentRef, float _factorCurrent);
+  void SetSensorVoltage(unsigned int _inPinVoltage, float _factorVoltage, float _offsetVoltage);
+  void SetSensorVoltage(unsigned int _inPinVoltage, float _factorVoltage);
 
   void SetCurrentReference(int _currentReference);
   void SetAnalogReference(float _analogReference);
-  void SetFilterSamples(int _numberOfSamples);
+  void SetFilterSamples(unsigned int _numberOfSamples);
 
-  int FilterValueADC(int pinADC);
+  int FilterValueADC(unsigned int pinADC);
   float SoftwareDAC(int digitalValue);
 
   int AutoCalibrationCurrent(int lastVRef);
@@ -54,11 +54,11 @@ public:
   float ReadVcc();
 
 private:
-  int inPinCurrent;
-  int inPinCurrentRef;
-  int inPinVoltage;
+  unsigned int inPinCurrent;
+  unsigned int inPinCurrentRef;
+  unsigned int inPinVoltage;
 
-  int numberOfSamples;
+  unsigned int numberOfSamples;
   float analogReference;
   float factorCurrent;
   float factorVoltage;

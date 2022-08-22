@@ -30,7 +30,7 @@ float voltage;
  * @param _inPinCurrentRef pin analógico Vref del sensor
  * @param _factorCurrent factor de sensiblidad del sensor
  */
-void BslibEnergyMeter::SetSensorCurrent(int _inPinCurrent, int _inPinCurrentRef, float _factorCurrent) {
+void BslibEnergyMeter::SetSensorCurrent(unsigned int _inPinCurrent, unsigned int _inPinCurrentRef, float _factorCurrent) {
   inPinCurrent = _inPinCurrent;
   inPinCurrentRef = _inPinCurrentRef;
   factorCurrent = _factorCurrent;
@@ -43,7 +43,7 @@ void BslibEnergyMeter::SetSensorCurrent(int _inPinCurrent, int _inPinCurrentRef,
  * @param _factorVoltage factor de sensiblidad del sensor
  * @param _offsetVoltage compensacion para obtener voltaje real
  */
-void BslibEnergyMeter::SetSensorVoltage(int _inPinVoltage, float _factorVoltage, float _offsetVoltage = 0) {
+void BslibEnergyMeter::SetSensorVoltage(unsigned int _inPinVoltage, float _factorVoltage, float _offsetVoltage = 0) {
   inPinVoltage = _inPinVoltage;
   factorVoltage = _factorVoltage;
   offsetVoltage = _offsetVoltage;
@@ -55,7 +55,7 @@ void BslibEnergyMeter::SetSensorVoltage(int _inPinVoltage, float _factorVoltage,
  * @param _inPinVoltage pin analógico de sensor de voltaje
  * @param _factorVoltage factor de sensiblidad del sensor
  */
-void BslibEnergyMeter::SetSensorVoltage(int _inPinVoltage, float _factorVoltage) {
+void BslibEnergyMeter::SetSensorVoltage(unsigned int _inPinVoltage, float _factorVoltage) {
   inPinVoltage = _inPinVoltage;
   factorVoltage = _factorVoltage;
 }
@@ -78,7 +78,7 @@ void BslibEnergyMeter::SetAnalogReference(float _analogReference) {
   analogReference = _analogReference;
 }
 
-void BslibEnergyMeter::SetFilterSamples(int _numberOfSamples) {
+void BslibEnergyMeter::SetFilterSamples(unsigned int _numberOfSamples) {
   numberOfSamples = _numberOfSamples;
 }
 
@@ -88,7 +88,7 @@ void BslibEnergyMeter::SetFilterSamples(int _numberOfSamples) {
  * @param pinADC pin analógico al cual leer
  * @return int
  */
-int BslibEnergyMeter::FilterValueADC(int pinADC) {
+int BslibEnergyMeter::FilterValueADC(unsigned int pinADC) {
   unsigned long valueADC = 0;
   int filteredValueADC = 0;
   for (int i = 0; i < numberOfSamples; i++) {
