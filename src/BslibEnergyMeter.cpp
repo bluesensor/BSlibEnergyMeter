@@ -18,6 +18,7 @@ int currentADC;
 int currentRefADC;
 float currentDAC;
 float current;
+float offsetWithoutLoad;
 
 int voltageADC;
 float voltageDAC;
@@ -67,6 +68,15 @@ void BslibEnergyMeter::SetSensorVoltage(unsigned int _inPinVoltage, float _facto
  */
 void BslibEnergyMeter::SetCurrentReference(int _currentReference) {
   currentReference = _currentReference;
+}
+
+/**
+ * @brief Se usa para estabblecer la corriente de offset tiempo antes de la activacion de la carga
+ *
+ * @param _currentReference
+ */
+void BslibEnergyMeter::SetOffsetNoLoad(float _offsetWithoutLoad) {
+  offsetWithoutLoad = _offsetWithoutLoad;
 }
 
 /**
@@ -155,11 +165,22 @@ int BslibEnergyMeter::GetCurrentADC() {
 float BslibEnergyMeter::GetCurrentDAC() {
   return currentDAC;
 }
+
 float BslibEnergyMeter::GetCurrent() {
   CalCurrent();
   return current;
 }
 
+float BslibEnergyMeter::GetCurrentWithoutOffset() {
+  CalCurrent();
+  float currentWithoutOffset;
+  if ((current - offsetWithoutLoad) <= 0) {
+    currentWithoutOffset = 0;
+  } else {
+    currentWithoutOffset = current - offsetWithoutLoad;
+  }
+  return currentWithoutOffset;
+}
 // -----------------------------------------------------------
 
 void BslibEnergyMeter::CalVoltage() {

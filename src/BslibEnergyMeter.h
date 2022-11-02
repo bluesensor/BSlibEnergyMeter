@@ -29,6 +29,7 @@ public:
 
   void SetCurrentReference(int _currentReference);
   void SetAnalogReference(float _analogReference);
+  void SetOffsetNoLoad(float _offsetWithoutLoad);
   void SetFilterSamples(unsigned int _numberOfSamples);
 
   int FilterValueADC(unsigned int pinADC);
@@ -41,6 +42,7 @@ public:
   int GetCurrentADC();
   float GetCurrentDAC();
   float GetCurrent();
+  float GetCurrentWithoutOffset();
 
   void CalVoltage();
   int GetVoltageADC();
@@ -63,6 +65,7 @@ private:
   float factorCurrent;
   float factorVoltage;
   float offsetVoltage;
+  float offsetWithoutLoad;
 };
 
 #endif
