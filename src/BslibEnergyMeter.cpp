@@ -101,7 +101,7 @@ void BslibEnergyMeter::SetFilterSamples(unsigned int _numberOfSamples) {
 int BslibEnergyMeter::FilterValueADC(unsigned int pinADC) {
   unsigned long valueADC = 0;
   int filteredValueADC = 0;
-  for (int i = 0; i < numberOfSamples; i++) {
+  for (unsigned int i = 0; i < numberOfSamples; i++) {
     valueADC += analogRead(pinADC);
   }
   filteredValueADC = valueADC / numberOfSamples;
@@ -127,17 +127,17 @@ float BslibEnergyMeter::SoftwareDAC(int digitalValue) {
 int BslibEnergyMeter::AutoCalibrationCurrent(int lastVRef) {
 
   float vRef = FilterValueADC(inPinCurrentRef);
-  float vOut = FilterValueADC(inPinCurrent);
+  // float vOut = FilterValueADC(inPinCurrent);
 
-  if (lastVRef == vRef) {
-    calibrationCurrent = vRef;
-  } else {
-    calibrationCurrent = vRef;
-  }
+  // if (lastVRef == vRef) {
+  //   calibrationCurrent = vRef;
+  // } else {
+  //   calibrationCurrent = vOut;
+  // }
   // algunos sensores tienen un offset (compensacion) cuando Vref<Vout
   // float offset = vOut - vRef;
   // calibrationCurrent += offset;
-  return calibrationCurrent;
+  return vRef;
 }
 
 void BslibEnergyMeter::CalCurrent() {
