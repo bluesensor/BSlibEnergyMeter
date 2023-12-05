@@ -91,7 +91,7 @@ void BslibEnergyMeter::SetFilterSamples(unsigned int _numberOfSamples) {
 int BslibEnergyMeter::FilterValueADC(unsigned int pinADC) {
   unsigned long valueADC = 0;
   int filteredValueADC = 0;
-  for (int i = 0; i < numberOfSamples; i++) {
+  for (unsigned int i = 0; i < numberOfSamples; i++) {
     valueADC += analogRead(pinADC);
   }
   filteredValueADC = valueADC / numberOfSamples;
